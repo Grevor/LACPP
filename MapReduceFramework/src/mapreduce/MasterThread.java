@@ -2,7 +2,6 @@ package mapreduce;
 
 import java.io.File;
 import java.net.URI;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.concurrent.Semaphore;
 
@@ -11,17 +10,20 @@ import mapreduce.intermediate.IntermediateSorter;
 import mapreduce.intermediate.ThreadSpecificEmitter;
 import mapreduce.output.OutputStrategy;
 import mapreduce.threads.MapperThread;
+import mapreduce.threads.ReducerThread;
 
-public final class MasterThread<InterKey, OutVal> extends Thread {
+public final class MasterThread<InterKey, OutVal, OutKey, OutputVal> extends Thread {
 	private URI input, output, mapOutput;
 	private Thread master;
 	private WorkScheduler<URI> mapScheduler;
-	private WorkScheduler<URI> reduceScheduler;
+	private WorkScheduler<InterKey> reduceScheduler;
 	private Semaphore barrier = new Semaphore(0);
 	
 	private Mapper< InterKey, OutVal> mapper;
+	private Reducer<InterKey, OutVal, OutKey, OutputVal> reducer;
 	
 	public MasterThread(Mapper<InterKey, OutVal> mapper,
+			Reducer<InterKey, OutVal, OutKey, OutputVal> reducer,
 			URI input, URI output, String id, 
 			int mappers, int reducers) {
 		super("MapReduce Master Thread '" + id + "'");
@@ -30,6 +32,7 @@ public final class MasterThread<InterKey, OutVal> extends Thread {
 		mapScheduler = new WorkScheduler<>(mappers);
 		reduceScheduler = new WorkScheduler<>(reducers);
 		this.mapper = mapper;
+		this.reducer = reducer;
 	}
 	
 	@Override
@@ -57,10 +60,37 @@ public final class MasterThread<InterKey, OutVal> extends Thread {
 	}
 
 	private void runReduce(IntermediateSorter<InterKey, OutVal> sortedIntermediateOutput, URI output) {
+		Iterable<InterKey> keys = sortedIntermediateOutput.getKeys();
+		int numKeys = 0;
+		for(InterKey k : keys){
+			reduceScheduler.addWork(k);
+			numKeys++;
+		}
+		int numThreads = Math.min(numKeys,reduceScheduler.getNumberOfQueues());
+		barrier = new Semaphore(numThreads);
+		
+		ArrayList<ReducerThread<InterKey, OutVal, OutKey, OutputVal>> threads = new ArrayList<>();
+		
+		for(int i = 0; i < numThreads; i++) {
+			OutputStrategy<OutKey, OutputVal> emitter = new ThreadSpecificEmitter<>();
+			
+			ReducerThread<InterKey, OutVal, OutKey, OutputVal> thread =
+					new ReducerThread<>(reducer, barrier, output, reduceScheduler, i, sortedIntermediateOutput);
+			reducer.setEmitter(thread,  emitter);
+			threads.add(thread);
+			
+		}
+		
+		for(int i = 0; i < numThreads; i++)
+			threads.get(i).start();
+		
+		for(int i = 0; i < numThreads; i++)
+			barrier.acquireUninterruptibly();
+
 	}
 
 	private Iterable<ThreadSpecificEmitter<InterKey, OutVal>> runMap(File[] inputFiles, int numberOfFiles) {
-		mapOutput = null;//Paths.get(input).resolve();
+		//mapOutput = Paths.get(input).resolve();
 		for(File f : inputFiles) {
 			mapScheduler.addWork(f.toURI());
 		}

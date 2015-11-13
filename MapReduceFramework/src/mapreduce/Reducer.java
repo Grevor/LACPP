@@ -7,7 +7,7 @@ import mapreduce.output.OutputStrategy;
 public abstract class Reducer<InKey, InVal, OutKey, OutVal> {
 	HashMap<Thread, OutputStrategy<OutKey, OutVal>> emitters;
 	
-	abstract void reduce(InKey key, Iterable<InVal> values);
+	public abstract void reduce(InKey key, Iterable<InVal> values);
 	
 	public final void emit(OutKey key, OutVal value) {
 		emitters.get(Thread.currentThread()).emit(key, value);

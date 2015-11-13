@@ -16,6 +16,10 @@ public class IntermediateData<Key, Value> implements IntermediateSorter<Key, Val
 		
 		return col;
 	}
+	@Override
+	public Iterable<Key> getKeys(){
+		return valueIterators.keySet();
+	}
 	
 	@Override
 	public void addKeysAndValues(Key key, Iterable<Value> values) {
