@@ -1,8 +1,19 @@
 package mapreduce;
 
-import java.util.Iterator;
+import java.util.HashMap;
+
+import mapreduce.output.OutputStrategy;
 
 public abstract class Reducer<InKey, InVal, OutKey, OutVal> {
-	abstract void reduce(InKey key, Iterator<InVal> values);
+	HashMap<Thread, OutputStrategy<OutKey, OutVal>> emitters;
 	
+	abstract void reduce(InKey key, Iterable<InVal> values);
+	
+	public final void emit(OutKey key, OutVal value) {
+		emitters.get(Thread.currentThread()).emit(key, value);
+	}
+	
+	final void setEmitter(Thread t, OutputStrategy<OutKey, OutVal> emitter) {
+		emitters.put(t, emitter);
+	}
 }
