@@ -6,7 +6,7 @@ import java.util.HashMap;
 import mapreduce.intermediate.ThreadSpecificEmitter;
 
 public abstract class Mapper<OutKey, OutVal> {
-	HashMap<Thread, ThreadSpecificEmitter<OutKey, OutVal>> emitter;
+	HashMap<Thread, ThreadSpecificEmitter<OutKey, OutVal>> emitter = new HashMap<>();
 	
 	public abstract void map(String key, InputStream file);
 	

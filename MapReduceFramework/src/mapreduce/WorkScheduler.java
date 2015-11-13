@@ -8,7 +8,7 @@ public class WorkScheduler<Work> {
 	
 	public WorkScheduler(int queues) {
 		pools = new ArrayList<>();
-		for(int i = 0; i < pools.size(); i++)
+		for(int i = 0; i < queues; i++)
 			pools.add(new WorkQueue<Work>());
 	}
 	

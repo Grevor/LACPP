@@ -5,7 +5,7 @@ import java.util.HashMap;
 import mapreduce.output.OutputStrategy;
 
 public abstract class Reducer<InKey, InVal, OutKey, OutVal> {
-	HashMap<Thread, OutputStrategy<OutKey, OutVal>> emitters;
+	HashMap<Thread, OutputStrategy<OutKey, OutVal>> emitters = new HashMap<>();
 	
 	public abstract void reduce(InKey key, Iterable<InVal> values);
 	
