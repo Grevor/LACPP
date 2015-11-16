@@ -6,7 +6,7 @@ import java.util.HashMap;
 
 import mapreduce.output.OutputStrategy;
 
-public class ThreadSpecificEmitter<Key, Value> implements OutputStrategy<Key, Value> {
+public class InMemoryOutputStrategy<Key, Value> implements OutputStrategy<Key, Value> {
 	private HashMap<Key, Collection<Value>> values = new HashMap<>();
 	
 	private Collection<Value> getValuesForKey(Key k) {
@@ -26,4 +26,7 @@ public class ThreadSpecificEmitter<Key, Value> implements OutputStrategy<Key, Va
 		Collection<Value> values = getValuesForKey(key);
 		values.add(val);
 	}
+
+	@Override
+	public void outputComplete() { }
 }

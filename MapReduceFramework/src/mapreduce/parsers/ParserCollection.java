@@ -2,24 +2,14 @@ package mapreduce.parsers;
 
 import java.util.HashMap;
 
-public class ParserCollection {
+public class ParserCollection implements ReadableParserCollection {
 		private HashMap<Class<?>, OutputParser<?>> parsers = new HashMap<>();
 		
-		/**
-		 * Checks if this parser collection contain a parser for the specified class.
-		 * @param soughtParser - The class of the parser.
-		 * @return
-		 * True if we indeed can find such a parser, else false.
-		 */
+		@Override
 		public boolean has(Class<?> soughtParser) {
 			return parsers.containsKey(soughtParser);
 		}
-		/**
-		 * Gets the parser for a specific type.
-		 * @param soughtParser - The class of the parser to get.
-		 * @return
-		 * The parser. If no parser exists, return null.
-		 */
+		@Override
 		@SuppressWarnings("unchecked")
 		public <T> OutputParser<T> getParser(Class<T> soughtParser) {
 			return (OutputParser<T>)parsers.get(soughtParser);
