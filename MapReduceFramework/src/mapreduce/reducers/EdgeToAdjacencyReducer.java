@@ -5,7 +5,7 @@ import java.util.Collection;
 
 import mapreduce.Reducer;
 
-public class EdgeToAdjacencyReducer extends Reducer<Long, Collection<Long>, Long, Collection<Long>>{
+public class EdgeToAdjacencyReducer extends Reducer<Long, Collection<Long>, Long, Collection<Long>> {
 
 	@Override
 	public void reduce(Long key, Iterable<Collection<Long>> values) {

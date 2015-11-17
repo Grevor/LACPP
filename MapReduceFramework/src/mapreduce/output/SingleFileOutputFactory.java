@@ -10,14 +10,22 @@ import java.util.Hashtable;
 import mapreduce.MapReduceFileOutputStream;
 import mapreduce.parsers.ReadableParserCollection;
 
+/**
+ * Factory that creates {@link SingleFileutput}.
+ * @author Admin
+ *
+ * @param <Key>
+ * @param <Value>
+ */
 public class SingleFileOutputFactory<Key, Value> implements OutputStrategyFactory<Key, Value> {
-	private String keyValueSeparator = " ", entrySeparator = "\n";
+	private String keyValueSeparator = " ", entrySeparator = "\n", filename;
 	private Hashtable<URI, SingleFileOutput<Key, Value>> openStreams = new Hashtable<>();
 
-	public SingleFileOutputFactory() { this(" ", "\n"); }
-	public SingleFileOutputFactory(String keyValueSeparator, String entrySeparator) {
+	public SingleFileOutputFactory() { this(" ", "\n", "output.txt"); }
+	public SingleFileOutputFactory(String keyValueSeparator, String entrySeparator, String filename) {
 		this.keyValueSeparator = keyValueSeparator;
 		this.entrySeparator = entrySeparator;
+		this.filename = filename;
 	}
 	
 	@Override
@@ -32,7 +40,7 @@ public class SingleFileOutputFactory<Key, Value> implements OutputStrategyFactor
 			return openStreams.get(output);
 		
 		try {
-			URI actualOutputURI = output.resolve("ALMIGHTY.txt");
+			URI actualOutputURI = output.resolve(filename);
 			File actualOutputFile = new File(actualOutputURI);
 			actualOutputFile.createNewFile();
 			outputStream = new MapReduceFileOutputStream(actualOutputFile);

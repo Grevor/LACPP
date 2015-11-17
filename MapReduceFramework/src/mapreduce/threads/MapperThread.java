@@ -10,6 +10,13 @@ import mapreduce.MapReduceFileInputStream;
 import mapreduce.Mapper;
 import mapreduce.WorkScheduler;
 
+/**
+ * Thread running a mapper process in the MapReduce framework.
+ * @author Admin
+ *
+ * @param <OutKey>
+ * @param <OutVal>
+ */
 public class MapperThread<OutKey, OutVal> extends WorkPoolThread<URI> {
 	private static final String desc = "Mapper Thread";
 	private URI output;

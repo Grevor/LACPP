@@ -4,6 +4,13 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 
+/**
+ * Data sorter sorting key-value pairs together.
+ * @author Admin
+ *
+ * @param <Key>
+ * @param <Value>
+ */
 public class IntermediateData<Key, Value> implements IntermediateSorter<Key, Value> {
 	private HashMap<Key, Collection<Iterable<Value>>> valueIterators = new HashMap<>();
 	

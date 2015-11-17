@@ -9,7 +9,7 @@ import java.util.Scanner;
 
 import mapreduce.Mapper;
 
-public class EdgeToAdjacencyMapper extends Mapper<Long, Collection<Long>>{
+public class EdgeToAdjacencyMapper extends Mapper<Long, Collection<Long>> {
 
 	@Override
 	public void map(String key, InputStream file) {
@@ -28,9 +28,9 @@ public class EdgeToAdjacencyMapper extends Mapper<Long, Collection<Long>>{
 			addEdge(n2, n1, edges);
 		}
 		
-		for(Entry<Long, Collection<Long>> e : edges.entrySet()) {
+		for(Entry<Long, Collection<Long>> e : edges.entrySet())
 			emit(e.getKey(), e.getValue());
-		}
+			
 		scan.close();
 	}
 

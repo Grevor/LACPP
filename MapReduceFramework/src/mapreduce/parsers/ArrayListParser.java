@@ -4,8 +4,13 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.util.ArrayList;
-import java.util.Collection;
 
+/**
+ * Parser for ArrayList<T>
+ * @author Admin
+ *
+ * @param <T>
+ */
 public class ArrayListParser<T> implements OutputParser<ArrayList<T>> {
 	private OutputParser<T> parser;
 	private String delimiter;

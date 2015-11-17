@@ -5,6 +5,11 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
+/**
+ * Buffered file stream used in the MapReducer to increase performance.
+ * @author Admin
+ *
+ */
 public class MapReduceFileInputStream extends BufferedInputStream {
 	private static final int BUFFER_SIZE = 1 << 20;
 

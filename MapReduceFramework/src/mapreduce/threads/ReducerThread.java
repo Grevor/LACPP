@@ -7,6 +7,15 @@ import mapreduce.Reducer;
 import mapreduce.WorkScheduler;
 import mapreduce.intermediate.IntermediateSorter;
 
+/**
+ * Thread running a reduce process in the MapReduce framework.
+ * @author Admin
+ *
+ * @param <InterKey>
+ * @param <InterVal>
+ * @param <OutKey>
+ * @param <OutputVal>
+ */
 public class ReducerThread<InterKey, InterVal, OutKey, OutputVal> extends WorkPoolThread<InterKey>{
 	
 	private static final String desc = "Reducer Thread";

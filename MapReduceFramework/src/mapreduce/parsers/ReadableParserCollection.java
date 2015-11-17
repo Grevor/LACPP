@@ -1,5 +1,10 @@
 package mapreduce.parsers;
 
+/**
+ * Interface to an immutable {@link ParserCollection}.
+ * @author Admin
+ *
+ */
 public interface ReadableParserCollection {
 
 	/**

@@ -5,6 +5,13 @@ import java.net.URI;
 import mapreduce.intermediate.InMemoryOutputStrategy;
 import mapreduce.parsers.ReadableParserCollection;
 
+/**
+ * Factory for creating {@link InMemoryOutputStrategy}.
+ * @author Admin
+ *
+ * @param <Key>
+ * @param <Value>
+ */
 public class InMemoryOutputStrategyFactory<Key, Value> implements OutputStrategyFactory<Key, Value>{
 
 	@Override

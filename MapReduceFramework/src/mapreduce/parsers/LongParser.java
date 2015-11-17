@@ -4,6 +4,11 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintStream;
 
+/**
+ * Parser for the long datatype.
+ * @author Admin
+ *
+ */
 public class LongParser implements OutputParser<Long>{
 	public static final LongParser singleton = new LongParser();
 	

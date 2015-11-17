@@ -2,6 +2,12 @@ package mapreduce.parsers;
 
 import java.util.HashMap;
 
+/**
+ * Class representing a collection of {@link OutputParser}s.
+ * The parsers can be retrieved based on their class.
+ * @author Admin
+ *
+ */
 public class ParserCollection implements ReadableParserCollection {
 		private HashMap<Class<?>, OutputParser<?>> parsers = new HashMap<>();
 		

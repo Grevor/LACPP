@@ -3,6 +3,12 @@ package mapreduce.intermediate;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+/**
+ * Class representing an iterable consisting of other iterables.
+ * @author Admin
+ *
+ * @param <T>
+ */
 public class SecondOrderIterable<T> implements Iterable<T>{
 	private ArrayList<Iterable<T>> iterables = new ArrayList<>();
 	

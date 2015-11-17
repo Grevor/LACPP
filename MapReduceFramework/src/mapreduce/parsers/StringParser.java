@@ -4,10 +4,15 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintStream;
 
-public class StringToStringParser implements OutputParser<String> {
-	public static final StringToStringParser singleton = new StringToStringParser();
+/**
+ * Parser for the String class.
+ * @author Admin
+ *
+ */
+public class StringParser implements OutputParser<String> {
+	public static final StringParser singleton = new StringParser();
 	
-	private StringToStringParser() { }
+	private StringParser() { }
 	
 	@Override
 	public String parse(InputStream input) {

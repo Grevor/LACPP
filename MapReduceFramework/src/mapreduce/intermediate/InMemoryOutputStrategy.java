@@ -6,6 +6,16 @@ import java.util.HashMap;
 
 import mapreduce.output.OutputStrategy;
 
+/**
+ * Class representing a fully in-memory output strategy.
+ * This class is suitable for smaller workloads not expected to exceed the JVM's allotted memory.
+ * This strategy is very fast, and should be used - if possible - as the mapper's output strategy.
+ * 
+ * @author Admin
+ *
+ * @param <Key>
+ * @param <Value>
+ */
 public class InMemoryOutputStrategy<Key, Value> implements OutputStrategy<Key, Value> {
 	private HashMap<Key, Collection<Value>> values = new HashMap<>();
 	
