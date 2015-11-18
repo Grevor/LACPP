@@ -1,6 +1,5 @@
 package mapreduce.threads;
 
-import java.net.URI;
 import java.util.concurrent.Semaphore;
 
 import mapreduce.Reducer;
@@ -19,17 +18,15 @@ import mapreduce.intermediate.IntermediateSorter;
 public class ReducerThread<InterKey, InterVal, OutKey, OutputVal> extends WorkPoolThread<InterKey>{
 	
 	private static final String desc = "Reducer Thread";
-	private URI output;
 	private Reducer<InterKey, InterVal, OutKey, OutputVal> reducer;
 	private IntermediateSorter<InterKey, InterVal> sorter;
 	
 	public ReducerThread(Reducer<InterKey, InterVal, OutKey, OutputVal> reducer,
-			Semaphore reporter, URI output, 
+			Semaphore reporter, 
 			WorkScheduler<InterKey> scheduler, int threadIndex, IntermediateSorter<InterKey,InterVal> sorter) 
 	
 	{
 		super(reporter, scheduler, threadIndex, desc);
-		this.output = output;
 		this.reducer = reducer;
 		this.sorter = sorter;
 	}

@@ -104,7 +104,7 @@ public final class MasterThread<InterKey, InterVal, OutKey, OutVal> extends Thre
 		
 		for(int i = 0; i < numThreads; i++) {
 			ReducerThread<InterKey, InterVal, OutKey, OutVal> thread =
-					new ReducerThread<>(reducer, barrier, output, reduceScheduler, i, sortedIntermediateOutput);
+					new ReducerThread<>(reducer, barrier, reduceScheduler, i, sortedIntermediateOutput);
 			OutputStrategy<OutKey, OutVal> emitter = createOutputStrategy(output, reduceOutputStrategyFactory);
 			reducer.setEmitter(thread,  emitter);
 			emitters.add(emitter);
@@ -174,7 +174,7 @@ public final class MasterThread<InterKey, InterVal, OutKey, OutVal> extends Thre
 			emitters.add(emitter);
 			
 			MapperThread<InterKey, InterVal> thread = 
-					new MapperThread<>(mapper, barrier, output, mapScheduler, i);
+					new MapperThread<>(mapper, barrier, mapScheduler, i);
 			mapper.setEmitter(thread, emitter);
 			threads.add(thread);
 		}
