@@ -77,13 +77,11 @@ public final class MasterThread<InterKey, InterVal, OutKey, OutVal> extends Thre
 		complete.release(Integer.MAX_VALUE);
 	}
 
-	private IntermediateSorter<InterKey, InterVal> 
-	sortOutput(Iterable<OutputStrategy<InterKey, InterVal>> runMap) {
+	private IntermediateSorter<InterKey, InterVal> sortOutput(Iterable<OutputStrategy<InterKey, InterVal>> runMap) {
 		IntermediateSorter<InterKey, InterVal> sorter = new IntermediateData<>();
-		for(OutputStrategy<InterKey, InterVal> em : runMap) {
+		for(OutputStrategy<InterKey, InterVal> em : runMap)
 			for(InterKey k : em.getKeys())
 				sorter.addKeysAndValues(k, em.getValues(k));
-		}
 		return sorter;
 	}
 
