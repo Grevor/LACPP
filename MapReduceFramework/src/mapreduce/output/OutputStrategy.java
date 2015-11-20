@@ -1,5 +1,7 @@
 package mapreduce.output;
 
+import java.io.IOException;
+
 /**
  * Interface of an object capable of handling output in a MapReduce framework.
  * @author Admin
@@ -28,5 +30,5 @@ public interface OutputStrategy<Key, Value> {
 	 * @return
 	 */
 	Iterable<Value> getValues(Key k);
-	void outputComplete();
+	void outputComplete() throws IOException;
 }

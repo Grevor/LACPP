@@ -21,6 +21,6 @@ public interface ReadableParserCollection {
 	 * @return
 	 * The parser. If no parser exists, return null.
 	 */
-	<T> OutputParser<T> getParser(Class<T> soughtParser);
+	<T> OutputParser<T> getParser(Class<? extends T> soughtParser);
 
 }

@@ -2,7 +2,6 @@ package mapreduce.output;
 
 import java.net.URI;
 
-import mapreduce.intermediate.InMemoryOutputStrategy;
 import mapreduce.parsers.ReadableParserCollection;
 
 /**

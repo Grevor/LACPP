@@ -3,6 +3,7 @@ package mapreduce;
 import java.net.URI;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * Class creating URI:s in a certain directory.
@@ -11,15 +12,15 @@ import java.nio.file.Paths;
  */
 public class OutputURICreator {
 	private Path directoryPath;
-	private int fileNumber;
+	private AtomicLong fileNumber = new AtomicLong();
 	
 	public OutputURICreator(URI base) {
 		directoryPath = Paths.get(base);
 	}
 	
 	public URI getOutputURI() {
-		URI uri = directoryPath.resolve("output" + fileNumber).toUri();
-		fileNumber++;
+		long number = fileNumber.getAndIncrement();
+		URI uri = directoryPath.resolve("output" + number).toUri();
 		return uri;
 	}
 }

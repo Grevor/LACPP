@@ -1,9 +1,12 @@
 package mapreduce.parsers;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintStream;
+import java.io.StringReader;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 /**
  * Parser for ArrayList<T>
@@ -23,7 +26,7 @@ public class ArrayListParser<T> implements OutputParser<ArrayList<T>> {
 
 	@Override
 	public ArrayList<T> parse(InputStream input) {
-		return null;
+			return null;
 	}
 
 	@Override

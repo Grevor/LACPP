@@ -3,6 +3,7 @@ package mapreduce.parsers;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintStream;
+import java.util.Scanner;
 
 /**
  * Parser for the long datatype.
@@ -14,9 +15,11 @@ public class LongParser implements OutputParser<Long>{
 	
 	private LongParser() { }
 
+	@SuppressWarnings("resource")
 	@Override
 	public Long parse(InputStream input) {
-		return null;
+		Scanner scan = new Scanner(input);
+		return scan.nextLong();
 	}
 
 	@Override

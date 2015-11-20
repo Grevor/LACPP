@@ -13,7 +13,7 @@ public class WordCountMapper extends Mapper<String, Long> {
 	public void map(String key, InputStream file) {
 		HashMap<String, Long> counts = new HashMap<>();
 		Scanner scan = new Scanner(file);
-		scan.useDelimiter("[ ,.:;\r\n\t\"“”?!]"); // Fairly good delimiter pattern. (read: better than default)
+		scan.useDelimiter("[ ,.:;\r\n\t\"“”?!()]"); // Fairly good delimiter pattern. (read: better than default)
 		while(scan.hasNext()) {
 			String word = scan.next().toLowerCase();
 			if(word.equals(""))

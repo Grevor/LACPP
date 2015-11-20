@@ -17,7 +17,7 @@ public class ParserCollection implements ReadableParserCollection {
 		}
 		@Override
 		@SuppressWarnings("unchecked")
-		public <T> OutputParser<T> getParser(Class<T> soughtParser) {
+		public <T> OutputParser<T> getParser(Class<? extends T> soughtParser) {
 			return (OutputParser<T>)parsers.get(soughtParser);
 		}
 		/**

@@ -3,6 +3,7 @@ package mapreduce.parsers;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintStream;
+import java.util.Scanner;
 
 /**
  * Parser for the String class.
@@ -14,9 +15,10 @@ public class StringParser implements OutputParser<String> {
 	
 	private StringParser() { }
 	
+	@SuppressWarnings("resource")
 	@Override
 	public String parse(InputStream input) {
-		throw new Error("");
+		return new Scanner(input).next();
 	}
 
 	@Override

@@ -10,15 +10,20 @@ import java.util.Scanner;
 import mapreduce.MapReduceFramework;
 import mapreduce.SingleNodeMapReduceFramework;
 import mapreduce.StatusTracker;
+import mapreduce.mappers.CommonFriendsMapper;
 import mapreduce.mappers.EdgeToAdjacencyMapper;
+import mapreduce.mappers.StringEdgeToAdjacencyMapper;
 import mapreduce.mappers.WordCountMapper;
 import mapreduce.output.InMemoryOutputStrategyFactory;
+import mapreduce.output.MultipleFileOutputFactory;
 import mapreduce.output.SingleFileOutputFactory;
 import mapreduce.parsers.ArrayListParser;
 import mapreduce.parsers.ClassConverter;
 import mapreduce.parsers.LongParser;
 import mapreduce.parsers.StringParser;
+import mapreduce.reducers.CommonFriendsReducer;
 import mapreduce.reducers.EdgeToAdjacencyReducer;
+import mapreduce.reducers.StringEdgeToAdjacencyReducer;
 import mapreduce.reducers.WordCountReducer;
 
 public class TestMain {
@@ -69,16 +74,51 @@ public class TestMain {
 			}
 		});
 		
+		excercises.put(4, new TestRunner() {
+			
+			@Override
+			public StatusTracker start() {
+				framework.addParser(ArrayList.class, new ArrayListParser<>(StringParser.singleton, " "));
+				File input = new File("input3");
+				File intermediateOutput = new File("adjacencyOutput");
+				intermediateOutput.mkdirs();
+				File output = new File("output");
+				clearDir(intermediateOutput);
+				StatusTracker adjacency = framework.requestProcess(new StringEdgeToAdjacencyMapper(), 
+						new StringEdgeToAdjacencyReducer(),
+						new InMemoryOutputStrategyFactory<String, ArrayList<String>>(), 
+						new MultipleFileOutputFactory<String, ArrayList<String>>((long)(1<<24), " # ", "\n", String.class, (Class<? extends ArrayList<String>>) ArrayList.class),//(" # ", "\n", outputFilename),
+						input.toURI(), intermediateOutput.toURI(), mappers, reducers);
+				adjacency.waitUntilComplete();
+				return framework.requestProcess(new CommonFriendsMapper(), 
+						new CommonFriendsReducer(), 
+						new InMemoryOutputStrategyFactory<String, ArrayList<String>>(), 
+						new SingleFileOutputFactory<String, ArrayList<String>>(" # ", "\n", "file.txt"), 
+						intermediateOutput.toURI(), output.toURI(), mappers, reducers);
+			}
+		});
+		
 		System.out.print("Select the excercise to run: ");
 		int ex = scan.nextInt();
-		StatusTracker request = excercises.get(ex).start();
 		File outputDir = new File("output");
 		clearDir(outputDir);
-		waitForCompletionAndWriteOutput(outputDir, request);
+		long nanos = timeRequest(ex, outputDir);
+		System.out.println("Time for operation was:\t" + (nanos / 1000000) + "ms");
 		scan.close();
+	}
+	
+	private static long timeRequest(int ex, File outputDir) throws FileNotFoundException {
+		long start = System.nanoTime();
+		StatusTracker request = excercises.get(ex).start();
+		request.waitUntilComplete();
+		long end = System.nanoTime();
+		waitForCompletionAndWriteOutput(outputDir, request);
+		return end - start;
 	}
 
 	private static void clearDir(File outputDir) {
+		if(!outputDir.exists())
+			return;
 		for(File f : outputDir.listFiles())
 			f.delete();
 	}

@@ -1,10 +1,8 @@
-package mapreduce.intermediate;
+package mapreduce.output;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-
-import mapreduce.output.OutputStrategy;
 
 /**
  * Class representing a fully in-memory output strategy.

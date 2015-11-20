@@ -42,6 +42,7 @@ public class MapperThread<OutKey, OutVal> extends WorkPoolThread<URI> {
 				mapper.map(id, dataStream);
 			} catch (Exception e) {
 				System.err.println("the input '" + id + "' failed. Ignoring...");
+				e.printStackTrace();
 			}
 		}
 		
