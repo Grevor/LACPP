@@ -31,6 +31,11 @@ public class SecondOrderIterable<T> implements Iterable<T>{
 			mainIterator = iter;
 			findNextCurrent();
 		}
+		
+		@Override
+		public void remove() {
+			
+		}
 
 		@Override
 		public boolean hasNext() {

@@ -49,7 +49,7 @@ public class TestMain {
 		final int reducers = scan.nextInt();
 		
 		
-		
+		//--- 
 		excercises.put(2, new TestRunner() {
 			
 			@Override
@@ -65,6 +65,7 @@ public class TestMain {
 			}
 		});
 		
+		//--- Maps edge list -> adjacency list
 		excercises.put(3, new TestRunner() {
 			
 			@Override
@@ -80,8 +81,12 @@ public class TestMain {
 		});
 		
 		//--- common friends.
+		// Performs:
+		// edge list -> adjacency
+		// adjacency -> common friends
 		excercises.put(4, new TestRunner() {
 			
+			@SuppressWarnings("unchecked")
 			@Override
 			public StatusTracker start() {
 				framework.addParser(ArrayList.class, new ArrayListParser<>(StringParser.singleton, " "));
@@ -105,6 +110,10 @@ public class TestMain {
 		});
 		
 		//--- Triangles
+		// Performs:
+		// edge list -> adjacency
+		// adjacency -> triangle permutations counts
+		// perm counts -> actual count
 		excercises.put(5, new TestRunner() {
 			
 			@Override
