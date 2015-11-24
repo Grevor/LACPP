@@ -11,8 +11,10 @@ import mapreduce.MapReduceFramework;
 import mapreduce.SingleNodeMapReduceFramework;
 import mapreduce.StatusTracker;
 import mapreduce.mappers.CommonFriendsMapper;
+import mapreduce.mappers.CountMapper;
 import mapreduce.mappers.EdgeToAdjacencyMapper;
 import mapreduce.mappers.StringEdgeToAdjacencyMapper;
+import mapreduce.mappers.TrianglesMapper;
 import mapreduce.mappers.WordCountMapper;
 import mapreduce.output.InMemoryOutputStrategyFactory;
 import mapreduce.output.MultipleFileOutputFactory;
@@ -20,10 +22,13 @@ import mapreduce.output.SingleFileOutputFactory;
 import mapreduce.parsers.ArrayListParser;
 import mapreduce.parsers.ClassConverter;
 import mapreduce.parsers.LongParser;
+import mapreduce.parsers.Pair;
 import mapreduce.parsers.StringParser;
 import mapreduce.reducers.CommonFriendsReducer;
+import mapreduce.reducers.CountReducer;
 import mapreduce.reducers.EdgeToAdjacencyReducer;
 import mapreduce.reducers.StringEdgeToAdjacencyReducer;
+import mapreduce.reducers.TrianglesReducer;
 import mapreduce.reducers.WordCountReducer;
 
 public class TestMain {
@@ -74,6 +79,7 @@ public class TestMain {
 			}
 		});
 		
+		//--- common friends.
 		excercises.put(4, new TestRunner() {
 			
 			@Override
@@ -95,6 +101,44 @@ public class TestMain {
 						new InMemoryOutputStrategyFactory<String, ArrayList<String>>(), 
 						new SingleFileOutputFactory<String, ArrayList<String>>(" # ", "\n", "file.txt"), 
 						intermediateOutput.toURI(), output.toURI(), mappers, reducers);
+			}
+		});
+		
+		//--- Triangles
+		excercises.put(5, new TestRunner() {
+			
+			@Override
+			public StatusTracker start() {
+				framework.addParser(ArrayList.class, new ArrayListParser<>(StringParser.singleton, " "));
+				File input = new File("input3");
+				
+				File intermediateOutput = new File("adjacencyOutput");
+				intermediateOutput.mkdirs();
+				clearDir(intermediateOutput);
+				
+				File intermediateOutput2 = new File("countOutput");
+				intermediateOutput2.mkdirs();
+				clearDir(intermediateOutput2);
+				
+				File output = new File("output");
+				clearDir(intermediateOutput);
+				StatusTracker adjacency = framework.requestProcess(new StringEdgeToAdjacencyMapper(), 
+						new StringEdgeToAdjacencyReducer(),
+						new InMemoryOutputStrategyFactory<String, ArrayList<String>>(), 
+						new MultipleFileOutputFactory<String, ArrayList<String>>((long)(1<<24), " ", "\n", String.class, (Class<? extends ArrayList<String>>) ArrayList.class),//(" # ", "\n", outputFilename),
+						input.toURI(), intermediateOutput.toURI(), mappers, reducers);
+				adjacency.waitUntilComplete();
+				adjacency = framework.requestProcess(new TrianglesMapper(), 
+						new TrianglesReducer(), 
+						new InMemoryOutputStrategyFactory<String, Pair<String, ArrayList<String>>>(), 
+						new SingleFileOutputFactory<String, Long>(" ", "\n", "file.txt"), 
+						intermediateOutput.toURI(), intermediateOutput2.toURI(), mappers, reducers);
+				adjacency.waitUntilComplete();
+				return framework.requestProcess(new CountMapper(), 
+						new CountReducer(), 
+						new InMemoryOutputStrategyFactory<String, Long>(), 
+						new SingleFileOutputFactory<String, Long>(" ", "\n", "file.txt"), 
+						intermediateOutput2.toURI(), output.toURI(), mappers, reducers);
 			}
 		});
 		
