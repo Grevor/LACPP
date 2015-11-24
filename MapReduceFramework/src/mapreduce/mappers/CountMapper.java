@@ -7,6 +7,7 @@ import mapreduce.Mapper;
 
 public class CountMapper extends Mapper<String, Long> {
 
+	@SuppressWarnings("resource")
 	@Override
 	public void map(String key, InputStream file) {
 		Scanner scan = new Scanner(file);

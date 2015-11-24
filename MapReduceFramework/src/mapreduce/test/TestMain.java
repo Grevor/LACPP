@@ -87,7 +87,6 @@ public class TestMain {
 		// adjacency -> common friends
 		excercises.put(4, new TestRunner() {
 			
-			@SuppressWarnings("unchecked")
 			@Override
 			public StatusTracker start() {
 				framework.addParser(ArrayList.class, new ArrayListParser<>(StringParser.singleton, " "));
@@ -181,8 +180,11 @@ public class TestMain {
 	private static void waitForCompletionAndWriteOutput(File output, StatusTracker tracker)
 			throws FileNotFoundException {
 		tracker.waitUntilComplete();
+		File[] outputFiles = output.listFiles();
+		if(outputFiles == null)
+			System.out.println("Found no output");
 		
-		for(File f : output.listFiles()) {
+		for(File f : outputFiles) {
 			if(f.isDirectory())
 				continue;
 			
