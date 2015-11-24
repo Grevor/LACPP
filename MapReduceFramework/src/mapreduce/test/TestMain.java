@@ -181,8 +181,10 @@ public class TestMain {
 			throws FileNotFoundException {
 		tracker.waitUntilComplete();
 		File[] outputFiles = output.listFiles();
-		if(outputFiles == null)
+		if(outputFiles == null) {
 			System.out.println("Found no output");
+			return;
+		}
 		
 		for(File f : outputFiles) {
 			if(f.isDirectory())
