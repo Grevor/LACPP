@@ -40,6 +40,7 @@ public class TestMain {
 		framework.addParser(String.class, StringParser.singleton);
 		framework.addParser(Long.class, LongParser.singleton);
 		Class<ArrayList<Long>> arrClazz = ClassConverter.convert(ArrayList.class);
+		final Class<ArrayList<String>> arrStrClazz = ClassConverter.convert(ArrayList.class);
 		framework.addParser(arrClazz, new ArrayListParser<>(LongParser.singleton, " "));
 		
 		Scanner scan = new Scanner(System.in);
@@ -95,10 +96,11 @@ public class TestMain {
 				intermediateOutput.mkdirs();
 				File output = new File("output");
 				clearDir(intermediateOutput);
+				
 				StatusTracker adjacency = framework.requestProcess(new StringEdgeToAdjacencyMapper(), 
 						new StringEdgeToAdjacencyReducer(),
 						new InMemoryOutputStrategyFactory<String, ArrayList<String>>(), 
-						new MultipleFileOutputFactory<String, ArrayList<String>>((long)(1<<24), " # ", "\n", String.class, (Class<? extends ArrayList<String>>) ArrayList.class),//(" # ", "\n", outputFilename),
+						new MultipleFileOutputFactory<String, ArrayList<String>>((long)(1<<24), " # ", "\n", String.class, arrStrClazz),//(Class<? extends ArrayList<String>>) ArrayList.class),//(" # ", "\n", outputFilename),
 						input.toURI(), intermediateOutput.toURI(), mappers, reducers);
 				adjacency.waitUntilComplete();
 				return framework.requestProcess(new CommonFriendsMapper(), 
@@ -134,7 +136,7 @@ public class TestMain {
 				StatusTracker adjacency = framework.requestProcess(new StringEdgeToAdjacencyMapper(), 
 						new StringEdgeToAdjacencyReducer(),
 						new InMemoryOutputStrategyFactory<String, ArrayList<String>>(), 
-						new MultipleFileOutputFactory<String, ArrayList<String>>((long)(1<<24), " ", "\n", String.class, (Class<? extends ArrayList<String>>) ArrayList.class),//(" # ", "\n", outputFilename),
+						new MultipleFileOutputFactory<String, ArrayList<String>>((long)(1<<24), " ", "\n", String.class, arrStrClazz),//(Class<? extends ArrayList<String>>) ArrayList.class),//(" # ", "\n", outputFilename),
 						input.toURI(), intermediateOutput.toURI(), mappers, reducers);
 				adjacency.waitUntilComplete();
 				adjacency = framework.requestProcess(new TrianglesMapper(), 
